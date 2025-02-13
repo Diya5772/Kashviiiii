@@ -2,6 +2,7 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import logo from "../assets/assets/logo.jpg"
 import { assets } from '../assets/assets/frontend_assets/assets';
 
 export const Navbar = () => {
@@ -11,15 +12,11 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
-      logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
+  
 
   // Function to extract initials from user email
   const getInitials = (email) => (email ? email[0].toUpperCase() : "?");
@@ -36,14 +33,14 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex items-center justify-between py-5 font-medium px-6 bg-white shadow-md relative">
+    <nav className="flex items-center justify-between py-3 font-medium px-6 bg-white shadow-md relative">
       {/* Logo */}
       <Link to="/" className="flex items-center">
-        <img src={assets.logo} alt="Logo" className="w-12" />
+        <img src={logo} alt="Logo" className="w-12" />
       </Link>
 
       {/* Navigation Links (Desktop) */}
-      <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
+      <ul className="hidden sm:flex gap-5 text-sm text-gray-600">
         {["Home", "Contact", "Blogs", "Collection", "AboutUs"].map((item) => (
           <NavLink 
             key={item} 
@@ -90,8 +87,8 @@ export const Navbar = () => {
           </div>
         ) : (
           <div className="space-x-4">
-            <Link to="/login" className="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600">Login</Link>
-            <Link to="/signup" className="bg-green-500 px-4 py-2 text-white rounded hover:bg-green-600">Sign Up</Link>
+            <Link to="/login" className="bg-white border-2 border-yellow-500 px-3 py-1 text-gray-600 rounded hover:bg-yellow-600">Login</Link>
+            <Link to="/signup" className=" px-3 py-1 text-yellow-500  border-2 border-gray-600  rounded hover:bg-green-600">Sign Up</Link>
           </div>
         )}
 

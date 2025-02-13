@@ -1,5 +1,8 @@
-import React from 'react';
-import { ShoppingBag, Heart, Search, Menu, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronRight } from 'lucide-react';
+import home1 from '../assets/Home1.jpg';
+import home2 from '../assets/Home2.jpg';
+import home3 from '../assets/Home3.jpg';
 import { Navbar } from '../components/navbar';
 
 const HomePage = () => {
@@ -7,92 +10,105 @@ const HomePage = () => {
     { name: 'Silk Sarees', count: '120+' },
     { name: 'Cotton Sarees', count: '85+' },
     { name: 'Designer Sarees', count: '95+' },
-    { name: 'Bridal Sarees', count: '45+' }
+    { name: 'Bridal Sarees', count: '45+' },
   ];
 
   const featuredProducts = [
-    { name: 'Banarasi Silk Saree', price: '$299', image: '/api/placeholder/300/400' },
-    { name: 'Kanjivaram Silk', price: '$399', image: '/api/placeholder/300/400' },
-    { name: 'Designer Cotton', price: '$199', image: '/api/placeholder/300/400' }
+    { name: 'Banarasi Silk Saree', price: '$299', image: home3 },
+    { name: 'Kanjivaram Silk', price: '$399', image: home1 },
+    { name: 'Designer Cotton', price: '$199', image: home2 },
   ];
 
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [home1, home2, home3];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-     <Navbar/>
+    <div><Navbar/>
+    <div className="min-w-full w-full min-h-screen pt-16 bg-[#DCD7C9]">
 
       {/* Hero Section */}
-      <div className="relative bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-5xl font-bold mb-6">Discover Traditional Elegance</h1>
-              <p className="text-lg text-gray-600 mb-8">
-                Explore our curated collection of handcrafted sarees from India's finest artisans.
-              </p>
-              <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800">
+      
+     <div className="relative w-full min-h-screen flex items-end justify-start bg-black">
+        <img
+          src={images[currentImage]}
+          alt="Hero"
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-90"
+        />
+        <div className="relative w-full text-left bg-black bg-opacity-50">
+          <div className="absolute bottom-0 left-0 w-full h-full flex items-end justify-start">
+            <div className="absolute bottom-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
+            <div className="relative z-20 px-2 py-2">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ color: '#F5F5F5', fontFamily: 'EB Garamond' }}>KASHVI CREATION</h1>
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-4" style={{ color: '#F5F5F5', fontFamily: 'EB Garamond' }}>Since 2022</p>
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-4" style={{ color: '#F5F5F5', fontFamily: 'EB Garamond' }}>“प्रेम और विश्वास का अनोखा संगम”</p>
+              <button className="bg-[#3F4F44] text-black px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 lg:px-12 lg:py-6 rounded-none hover:bg-gray-200" style={{ fontSize: '1.5rem' }}>
                 Shop Collection
               </button>
             </div>
-            <div className="relative h-96">
-              <img
-                src=""
-                alt="Featured Saree"
-                className="absolute inset-0 w-full h-full object-cover rounded-lg"
-              />
-            </div>
           </div>
         </div>
       </div>
-
-      {/* Categories */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-12">Shop by Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <div key={category.name} className="group relative overflow-hidden rounded-lg">
-                <img
-                  src="/api/placeholder/400/500"
-                  alt={category.name}
-                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
-                  <div className="text-white">
-                    <h3 className="text-xl font-semibold">{category.name}</h3>
-                    <p>{category.count} Products</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Featured Products */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full py-16 bg-[#DCD7C9]">
+        <div className="max-w-screen-lg mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-bold">Featured Products</h2>
             <button className="flex items-center text-gray-600 hover:text-gray-900">
               View All <ChevronRight className="h-5 w-5 ml-2" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product) => (
-              <div key={product.name} className="group">
+              <div key={product.name} className="group bg-[#3F4F44] rounded-lg shadow-lg p-4">
                 <div className="relative overflow-hidden rounded-lg mb-4">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <button className="absolute bottom-4 left-4 bg-white px-6 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Quick View
+                  <button className="absolute bottom-4 left-4 bg-[#A27B5C] px-6 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Quick View 
                   </button>
                 </div>
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-gray-600">{product.price}</p>
+                <div className="p-4 bg-[#A27B5C] rounded-lg">
+                  <h3 className="text-lg font-semibold">{product.name}</h3>
+                  <p className="text-gray-600">{product.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+ {/* Video Section */}
+ <div className="w-full bg-black text-white py-16">
+        <div className="max-w-screen-lg mx-auto">
+          <h2 className="text-3xl font-bold mb-8">Our Story</h2>
+          <div className="relative w-full h-64 bg-gray-800">
+            <video className="w-full h-full object-cover" controls>
+              <source src="C:\Usef" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+      {/* Categories Section */}
+      <div className="w-full py-16 bg-[#DCD7C9]">
+        <div className="max-w-screen-lg mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">Shop by Category</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {categories.map((category) => (
+              <div key={category.name} className="text-center">
+                <div className="bg-[#A27B5C] rounded-lg p-8 mb-4">
+                  <h3 className="text-xl font-semibold">{category.name}</h3>
+                  <p className="text-gray-600">{category.count} Products</p>
+                </div>
               </div>
             ))}
           </div>
@@ -100,10 +116,12 @@ const HomePage = () => {
       </div>
 
       {/* Newsletter */}
-      <div className="bg-black text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="w-full bg-black text-white py-16">
+        <div className="max-w-screen-lg mx-auto text-center px-4">
           <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-          <p className="text-gray-300 mb-8">Stay updated with our latest collections and exclusive offers.</p>
+          <p className="text-gray-300 mb-8">
+            Stay updated with our latest collections and exclusive offers.
+          </p>
           <div className="max-w-md mx-auto flex gap-4">
             <input
               type="email"
@@ -118,8 +136,8 @@ const HomePage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <footer className="w-full bg-white border-t">
+        <div className="max-w-screen-lg mx-auto py-12 px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">About Us</h3>
@@ -159,6 +177,7 @@ const HomePage = () => {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 };

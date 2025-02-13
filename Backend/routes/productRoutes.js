@@ -48,6 +48,19 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching product", error });
+  }
+});
+
 // 3️⃣ Get Products with Filters
 router.post("/filter", async (req, res) => {
   try {
@@ -64,5 +77,29 @@ router.post("/filter", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
+router.post("/product", async (req, res) => {
+  try {
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add product" });
+  }
+});
+router.put("/product/:id", async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update product" });
+  }
+});
+router.delete("/product/:id", async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete product" });
+  }
+});
 export default router;
