@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
+import home from '../assets/Home.jpg';
 import home1 from '../assets/Home1.jpg';
 import home2 from '../assets/Home2.jpg';
 import home3 from '../assets/Home3.jpg';
+<<<<<<< HEAD
 import Navbar from '../components/navbar';
+=======
+import { Navbar } from '../components/navbar';
+import CircularGallery from '../components/CircularGallery'; 
+
+>>>>>>> c7221b7640ab0f76a8cfee41b5556cf6ecb82754
 const HomePage = () => {
   const categories = [
     { name: 'Silk Sarees', count: '120+' },
@@ -54,6 +61,29 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Circular Gallery Section */}
+      <div className="w-full py-8 bg-[#DCD7C9] relative">
+        
+        <div className="max-w-screen-lg mx-auto px-4 relative z-10 mb-8"> {/* Added margin-bottom (mb-8) */}
+          <h2 className="text-3xl font-bold mb-12 text-center">Explore Our Collection</h2>
+          <CircularGallery
+            items={[
+              { image: home3, text: 'Silk Sarees' },
+              { image: home2, text: 'Cotton Sarees' },
+              { image: home1, text: 'Designer Sarees' },
+              { image: home, text: 'Bridal Sarees' },
+            ]}
+            bend={3}
+            textColor="#ffffff"
+            borderRadius={0.05}
+            font="bold 30px DM Sans"
+          />
+        </div>
+
+        {/* Box Below the Photos Section */}
+  
       </div>
       {/* Featured Products */}
       <div className="w-full py-16 bg-[#DCD7C9]">
@@ -115,25 +145,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Newsletter */}
-      <div className="w-full bg-black text-white py-16">
-        <div className="max-w-screen-lg mx-auto text-center px-4">
-          <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-          <p className="text-gray-300 mb-8">
-            Stay updated with our latest collections and exclusive offers.
-          </p>
-          <div className="max-w-md mx-auto flex gap-4">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-full text-black"
-            />
-            <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-gray-200">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </div>
+    
 
       {/* Footer */}
       <footer className="w-full bg-white border-t">
