@@ -16,6 +16,7 @@ import AdminBlog from './pages/AdminBlog';
 import ShowProduct from './pages/ShowProduct';
 import Productlist from './pages/product_list';
 import EditProduct from './pages/EditProduct';
+import Wishlist from './pages/Wishlist';
 const App = () => {
 
   return (
@@ -26,6 +27,8 @@ const App = () => {
           <Route path='/collection' element={<Collection />} />
           <Route path='/aboutus' element={<AboutUs />} />
           <Route path='/blogs' element={<Blogs />} />
+          <Route path='/Wishlist' element={<Wishlist />} />
+
           <Route path='/product' element={<Product />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/login' element={<Login />} />

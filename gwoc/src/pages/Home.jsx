@@ -3,8 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import home1 from '../assets/Home1.jpg';
 import home2 from '../assets/Home2.jpg';
 import home3 from '../assets/Home3.jpg';
-import { Navbar } from '../components/navbar';
-
+import Navbar from '../components/navbar';
 const HomePage = () => {
   const categories = [
     { name: 'Silk Sarees', count: '120+' },
@@ -30,7 +29,8 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div><Navbar/>
+    <div>
+      <Navbar/>
     <div className="min-w-full w-full min-h-screen pt-16 bg-[#DCD7C9]">
 
       {/* Hero Section */}

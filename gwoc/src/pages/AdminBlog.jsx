@@ -3,21 +3,40 @@ import axios from "axios";
 
 const AdminBlog = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState({ title: "", content: "" });
+  const [newBlog, setNewBlog] = useState({ title: "", content: "", image: null });
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/blog/all").then((res) => setBlogs(res.data));
   }, []);
 
-  const handleAddBlog = async () => {
-    await axios.post("http://localhost:5000/api/blog/add", newBlog);
-    setNewBlog({ title: "", content: "" });
-    window.location.reload();
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "Kashviii"); // Replace with your Cloudinary preset
+
+    try {
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dowlh9mli/image/upload", formData);
+      return res.data.secure_url; // Cloudinary URL
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return null;
+    }
   };
 
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/blog/delete/${id}`);
-    setBlogs(blogs.filter((blog) => blog._id !== id));
+  const handleAddBlog = async () => {
+    let imageUrl = "";
+
+    if (newBlog.image) {
+      imageUrl = await handleImageUpload(newBlog.image);
+      if (!imageUrl) {
+        alert("Image upload failed!");
+        return;
+      }
+    }
+
+    await axios.post("http://localhost:5000/api/blog/add", { ...newBlog, image: imageUrl });
+    setNewBlog({ title: "", content: "", image: null });
+    window.location.reload();
   };
 
   return (
@@ -39,25 +58,14 @@ const AdminBlog = () => {
           onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })}
           className="border p-2 w-full mt-2"
         />
+        <input
+          type="file"
+          onChange={(e) => setNewBlog({ ...newBlog, image: e.target.files[0] })}
+          className="mt-2"
+        />
         <button onClick={handleAddBlog} className="bg-blue-500 text-white px-4 py-2 mt-2">
           Add Blog
         </button>
-      </div>
-
-      {/* List of Blogs */}
-      <div className="mt-6">
-        {blogs.map((blog) => (
-          <div key={blog._id} className="border p-4 mt-2">
-            <h2 className="text-xl font-bold">{blog.title}</h2>
-            <p>{blog.content}</p>
-            <button
-              onClick={() => handleDelete(blog._id)}
-              className="bg-red-500 text-white px-4 py-1 mt-2"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
       </div>
     </div>
   );

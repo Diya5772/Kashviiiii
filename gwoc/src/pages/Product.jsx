@@ -34,44 +34,45 @@ const Product = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Trying");
+    console.log("Trying to upload...");
+  
     try {
       const formDataToSend = new FormData();
       
       // Add basic fields
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('price', formData.price);
-      formDataToSend.append('category', formData.category);
-      formDataToSend.append('subCategory', formData.subCategory);
-      formDataToSend.append('sizes', formData.sizes.join(','));
-      formDataToSend.append('bestseller', formData.bestseller);
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("price", formData.price);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("subCategory", formData.subCategory);
+      formDataToSend.append("sizes", formData.sizes.join(","));
+      formDataToSend.append("bestseller", formData.bestseller);
       
       // Add filters as JSON string
-      formDataToSend.append('filters', JSON.stringify(formData.filters));
-      
-      // Add image file
+      formDataToSend.append("filters", JSON.stringify(formData.filters));
+  
+      // Add image file (only if selected)
       if (formData.image) {
-        formDataToSend.append('image', formData.image);
+        formDataToSend.append("image", formData.image);
       }
-
-      const response = await fetch('http://localhost:5000/api/product/add', {
-        method: 'POST',
+  
+      const response = await fetch("http://localhost:5000/api/product/add", {
+        method: "POST",
         body: formDataToSend,
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
-      console.log('Success:', data);
-      navigate('/products'); // Adjust this path as needed
+      console.log("Success:", data);
+      navigate("/products"); // Redirect after success
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -81,13 +82,13 @@ const Product = () => {
     const selectedSizes = Array.from(e.target.selectedOptions, (option) => option.value);
     setFormData((prev) => ({ ...prev, sizes: selectedSizes }));
   };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFormData((prev) => ({ ...prev, image: file }));
     }
   };
+  
 
   const handleFilterChange = (filter, value) => {
     setFormData((prev) => ({
@@ -125,10 +126,11 @@ const Product = () => {
             <label htmlFor="image" className="font-medium">Upload Image</label>
             <input type="file" name="image" onChange={handleImageChange} accept="image/*" className="border p-2 rounded-md" />
             {formData.image && (
-              <div className="mt-2">
-                <img src={URL.createObjectURL(formData.image)} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
-              </div>
-            )}
+  <div className="mt-2">
+    <img src={URL.createObjectURL(formData.image)} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
+  </div>
+)}
+
           </div>
 
           {/* Category */}

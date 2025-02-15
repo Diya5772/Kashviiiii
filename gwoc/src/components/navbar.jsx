@@ -2,10 +2,10 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-import logo from "../assets/assets/logo.jpg"
+import logo from "../assets/assets/logo.jpg";
 import { assets } from '../assets/assets/frontend_assets/assets';
 
-export const Navbar = () => {
+const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const { user, logout } = useContext(AuthContext);
@@ -17,7 +17,6 @@ export const Navbar = () => {
     navigate("/login");
   };
   
-
   // Function to extract initials from user email
   const getInitials = (email) => (email ? email[0].toUpperCase() : "?");
 
@@ -56,6 +55,11 @@ export const Navbar = () => {
       <div className="flex items-center gap-6">
         {/* Search Icon */}
         <img src={assets.search_icon} className="w-5 cursor-pointer" alt="Search" />
+
+        {/* Wishlist Icon */}
+        <Link to="/wishlist" className="relative">
+          <img src={assets.heart_icon} className="w-5" alt="Wishlist" />
+        </Link>
 
         {/* Profile Dropdown */}
         {user ? (
@@ -131,3 +135,5 @@ export const Navbar = () => {
     </nav>
   );
 };
+
+export default Navbar;

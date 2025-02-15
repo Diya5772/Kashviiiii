@@ -15,6 +15,27 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+router.post("/getImages", async (req, res) => {
+  try {
+      const { productIds } = req.body;
+
+      if (!productIds || !Array.isArray(productIds)) {
+          return res.status(400).json({ message: "Invalid product IDs" });
+      }
+
+      const products = await Product.find({ _id: { $in: productIds } });
+
+      const productMap = {};
+      products.forEach(product => {
+          productMap[product._id] = { image: product.image };
+      });
+
+      res.json(productMap);
+  } catch (error) {
+      console.error("Error fetching product images:", error);
+      res.status(500).json({ message: "Server error" });
+  }
+});
 
 // 1️⃣ Add Product (Admin Panel)
 router.post("/add", upload.single("image"), async (req, res) => {
