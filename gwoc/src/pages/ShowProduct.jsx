@@ -76,19 +76,19 @@ const ShowProduct = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-4">
         <DetailRow label="Category" value={product.category} />
-        <DetailRow label="Border" value={product.border} />
-        <DetailRow label="Border Type" value={product.borderType} />
-        <DetailRow label="Fabric Purity" value={product.fabricPurity} />
-        <DetailRow label="Material" value={product.material} />
-        <DetailRow label="Occasion" value={product.occasion} />
+        <DetailRow label="Border" value={product.filters.border||"N/A"} />
+        <DetailRow label="Border Type" value={product.filters["Border Type"]||"N/A"} />
+        <DetailRow label="Fabric Purity" value={product.filters["Fabric Purity"]||"N/A"} />
+        <DetailRow label="Material" value={product.filters.Material||"N/A"} />
+        <DetailRow label="Occasion" value={product.filters.Occasion||"N/A"} />
       </div>
       <div className="space-y-4">
-        <DetailRow label="Ornamentation" value={product.ornamentationType} />
-        <DetailRow label="Pattern" value={product.pattern} />
-        <DetailRow label="Color" value={product.color} />
-        <DetailRow label="Technique" value={product.technique} />
-        <DetailRow label="Zari Color" value={product.zariColor} />
-        <DetailRow label="Zari Type" value={product.zariType} />
+        <DetailRow label="Ornamentation" value={product.filters["Oranamentation Type"]||"N/A"} />
+        <DetailRow label="Pattern" value={product.filters.Pattern||"N/A"} />
+        <DetailRow label="Color" value={product.filters.Color||"N/A"} />
+        <DetailRow label="Technique" value={product.filters.Technique||"N/A"} />
+        <DetailRow label="Zari Color" value={product.filters["Zari Color"]||"N/A"} />
+        <DetailRow label="Zari Type" value={product.filters["Zari Type"]||"N/A"} />
       </div>
     </div>
   );
@@ -253,12 +253,11 @@ const ShowProduct = () => {
 
         <div className="lg:w-1/2">
           <h1 className="text-3xl font-serif text-gray-900 mb-4">{product.name}</h1>
-          <p className="text-2xl font-bold text-amber-800 mb-4">₹{product.price.toLocaleString()}</p>
-          <p className="text-gray-600 mb-6">{product.description}</p>
+          <p className="text-2xl font-bold text-amber-800 mb-4">Design No:{product.price.toLocaleString()}</p>
+          <p className="text-gray-600 mb-6">Description  :{product.description}</p>
 
           <div className="space-y-2 mb-6">
-            <p className="text-gray-600">SKU: {product.sku}</p>
-            <p className="text-gray-600">Category: {product.category}</p>
+            <p className="text-gray-600">Category  : {product.category}</p>
           </div>
 
           <div className="space-y-4">
@@ -368,28 +367,7 @@ const ShowProduct = () => {
       </div>
 
       {/* Similar Products Section */}
-      {similarProducts.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-2xl font-serif text-gray-900 mb-6">Similar Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {similarProducts.map((item) => (
-              <div key={item._id} className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative pb-[100%]">
-                  <img
-                    src={`http://localhost:5000${item.image}`}
-                    alt={item.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-medium text-gray-900 mb-2">{item.name}</h3>
-                  <p className="text-amber-700 font-bold">₹{item.price.toLocaleString()}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

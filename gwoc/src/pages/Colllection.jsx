@@ -78,7 +78,7 @@ const Collection = () => {
   return (
     <div className="font-poppins">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-4 mt-24">
         <div className="flex justify-between items-center">
           <h2 className="text-xl text-gray-700">{Object.keys(selectedFilters).length ? "Filtered Products" : "All Products"}</h2>
           <button onClick={resetFilters} className="text-[#B5865E] hover:text-[#8e6446] flex items-center">

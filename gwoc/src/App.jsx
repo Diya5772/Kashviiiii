@@ -17,6 +17,7 @@ import ShowProduct from './pages/ShowProduct';
 import Productlist from './pages/product_list';
 import EditProduct from './pages/EditProduct';
 import Wishlist from './pages/Wishlist';
+import Contact from './pages/Contact';
 const App = () => {
 
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path='/aboutus' element={<AboutUs />} />
           <Route path='/blogs' element={<Blogs />} />
           <Route path='/Wishlist' element={<Wishlist />} />
+          <Route path='/Contact' element={<Contact />} />
 
           <Route path='/product' element={<Product />} />
           <Route path='/cart' element={<Cart />} />

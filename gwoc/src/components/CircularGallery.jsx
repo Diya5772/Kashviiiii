@@ -281,14 +281,19 @@ class Media {
       }
     }
   
-    // Double the scale to increase both height and width
-    this.scale = (this.screen.height / 1500) * 2; // Multiply by 2 to double the size
+    // Double the height of the plane
+    const baseHeight = 350; // Base height for scaling
+    const baseWidth = 250; // Base width for scaling
+    this.scale = (this.screen.height / 1500) * 2; // Multiply by 2 to double the height
   
     // Apply the doubled scale to height and width
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    this.plane.scale.y = (this.viewport.height * (baseHeight * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (baseWidth * this.scale)) / this.screen.width;
   
+    // Update uniforms for the shader
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+  
+    // Adjust spacing and positioning
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
@@ -461,7 +466,7 @@ class App {
 
 export default function CircularGallery({
   items,
-  bend = 3,
+  bend = 2,
   textColor = "#ffffff",
   borderRadius = 0.05,
   font = "bold 30px DM Sans"
@@ -474,6 +479,6 @@ export default function CircularGallery({
     };
   }, [items, bend, textColor, borderRadius, font]);
   return (
-    <div className='w-full h-full overflow-hidden cursor-grab active:cursor-grabbing' ref={containerRef} />
+    <div className='w-full h-[800px] overflow-hidden cursor-grab active:cursor-grabbing' ref={containerRef} />
   );
 }
