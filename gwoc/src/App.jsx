@@ -19,6 +19,9 @@ import Productlist from './pages/product_list';
 import EditProduct from './pages/EditProduct';
 import Wishlist from './pages/Wishlist';
 import Contact from './pages/Contact';
+import AdminOrders from './pages/AdminOrders';
+import UsersPage from "./pages/UsersPage";
+import ProductsPage from "./pages/ProductsPage";
 const App = () => {
 
   return (
@@ -31,12 +34,11 @@ const App = () => {
           <Route path='/blogs' element={<Blogs />} />
           <Route path='/Wishlist' element={<Wishlist />} />
           <Route path='/Contact' element={<Contact />} />
-
           <Route path='/product' element={<Product />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/login' element={<Login />} />
           <Route path='/placeorder' element={<PlaceOrder />} />
-          <Route path='/orders' element={<Orders />} />
+          <Route path='/Orders' element={<Orders />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/AdminPage' element={<AdminPage />} />
           <Route path='/AdminBlog' element={<AdminBlog />} />
@@ -44,6 +46,10 @@ const App = () => {
           <Route path='/product/:id' element={<ShowProduct />} />
           <Route path='/Productlist' element={<Productlist />} />
           <Route path='/EditProduct/:id' element={<EditProduct />} />
+          <Route path='/AdminOrders' element={<AdminOrders />} />
+          <Route path="/admin/users" element={<UsersPage />} />
+          <Route path="/admin/products" element={<ProductsPage />} />
+          
 
         </Routes>
     </AuthProvider>

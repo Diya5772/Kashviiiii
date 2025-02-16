@@ -11,6 +11,7 @@ import wishlistRoutes from "./routes/wishlistRoutes.js"
 import reviewRoutes from "./routes/reviewRoutes.js"
 import faqRoutes from "./routes/faqRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js"
+import orderRoutes from "./routes/orderRoutes.js"
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,5 +29,5 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/review", reviewRoutes);
 app.use("/api/faq", faqRoutes);
 app.use("/api/admin", adminRoutes);
-
+app.use("/api/order", orderRoutes);
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
