@@ -6,7 +6,6 @@ const ShowProduct = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("about");
-  const [similarProducts, setSimilarProducts] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [userReview, setUserReview] = useState({ rating: 0, comment: "" });
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -55,15 +54,7 @@ const ShowProduct = () => {
     }
   };
 
-  const fetchReviews = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${id}`);
-      const data = await response.json();
-      setReviews(data);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
+
 
   const DetailRow = ({ label, value }) => (
     <div className="flex justify-between border-b pb-2">
@@ -145,15 +136,64 @@ const ShowProduct = () => {
       alert("Failed to add item to wishlist.");
     }
   };
+  const checkUserReview = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const reviews = await response.json();
+      const userReviewExists = reviews.some(review => {
+        // Assuming the backend populates userId or includes a way to identify user's review
+        return review.userId === JSON.parse(atob(token.split('.')[1])).id;
+      });
+      setHasSubmittedReview(userReviewExists);
+    } catch (error) {
+      console.error("Error checking user review:", error);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/reviews/${id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
 
   const submitReview = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+  
     if (!token) {
       alert("Please log in to submit a review.");
       return;
     }
 
+    if (hasSubmittedReview) {
+      alert("You have already submitted a review for this product.");
+      return;
+    }
+  
+    if (userReview.rating === 0) {
+      alert("Please select a rating.");
+      return;
+    }
+
+    if (!userReview.comment.trim()) {
+      alert("Please enter a comment.");
+      return;
+    }
+  
     try {
       const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
         method: 'POST',
@@ -161,18 +201,87 @@ const ShowProduct = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(userReview)
+        body: JSON.stringify({
+          rating: userReview.rating,
+          comment: userReview.comment
+        })
       });
-      const data = await response.json();
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit review.");
+      }
+  
       alert("Review submitted successfully!");
-      fetchReviews();
+      setHasSubmittedReview(true);
       setUserReview({ rating: 0, comment: "" });
+      fetchReviews();
     } catch (error) {
       console.error("Error submitting review:", error);
-      alert("Failed to submit review.");
+      alert(error.message);
     }
   };
 
+  const updateReview = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          rating: userReview.rating,
+          comment: userReview.comment
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      alert("Review updated successfully!");
+      fetchReviews();
+    } catch (error) {
+      console.error("Error updating review:", error);
+      alert(error.message);
+    }
+  };
+
+  const deleteReview = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    if (window.confirm("Are you sure you want to delete your review?")) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message);
+        }
+
+        alert("Review deleted successfully!");
+        setHasSubmittedReview(false);
+        setUserReview({ rating: 0, comment: "" });
+        fetchReviews();
+      } catch (error) {
+        console.error("Error deleting review:", error);
+        alert(error.message);
+      }
+    }
+  };
+
+  
   if (loading) {
     return <div className="text-center text-xl font-semibold mt-10">Loading...</div>;
   }
@@ -366,7 +475,6 @@ const ShowProduct = () => {
         </div>
       </div>
 
-      {/* Similar Products Section */}
       
     </div>
   );

@@ -50,6 +50,7 @@ const AdminNavbar = () => {
         </div>
 
         <Link to="/AdminBlog" className="hover:text-blue-400">Blog</Link>
+        <Link to="/AdminFAQ" className="hover:text-blue-400">FAQ</Link>
       </div>
 
       {/* Logout Button */}

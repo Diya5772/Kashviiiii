@@ -31,7 +31,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="w-full bg-[#3F4F44] shadow-md fixed top-0 left-0 z-50">
+    <nav className="w-full bg-transparent shadow-md fixed top-0 left-0 z-50">
       <div className="max-w-full mx-auto px-5 sm:px-10 flex items-center justify-between py-4">
         {/* Left Navigation */}
         <div className="hidden md:flex items-center gap-8">

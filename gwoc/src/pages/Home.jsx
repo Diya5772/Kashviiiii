@@ -9,6 +9,7 @@ import CircularGallery from '../components/CircularGallery';
 import video from '../assets/video.mp4';
 import galleryBg from '../assets/1.jpg'; 
 import footer_bg from '../assets/FOOTER_IMAGE.avif'; 
+import FAQ from '../components/FAQ';
 const HomePage = () => {
   const categories = [
     { name: 'Silk Sarees', count: '120+' },
@@ -37,6 +38,7 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
+      
       <div className="min-w-full w-full min-h-screen pt-16 bg-[#DCD7C9]">
         {/* Hero Section */}
         <div className="relative w-full min-h-screen flex items-end justify-start bg-black">
@@ -94,7 +96,9 @@ const HomePage = () => {
             />
           </div>
         </div>
-
+<div>
+  <FAQ/>
+</div>
         {/* Featured Products Section */}
         <div className="w-full py-16 bg-[#DCD7C9]">
           <div className="w-full px-4">

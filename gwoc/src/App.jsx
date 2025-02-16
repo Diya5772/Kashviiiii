@@ -13,6 +13,7 @@ import Signup from "./pages/Signup";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import AdminPage from './pages/AdminPage';
 import AdminBlog from './pages/AdminBlog';
+import AdminFAQ from './pages/AdminFAQ';
 import ShowProduct from './pages/ShowProduct';
 import Productlist from './pages/product_list';
 import EditProduct from './pages/EditProduct';
@@ -39,6 +40,7 @@ const App = () => {
           <Route path='/signup' element={<Signup />} />
           <Route path='/AdminPage' element={<AdminPage />} />
           <Route path='/AdminBlog' element={<AdminBlog />} />
+          <Route path='/AdminFAQ' element={<AdminFAQ />} />
           <Route path='/product/:id' element={<ShowProduct />} />
           <Route path='/Productlist' element={<Productlist />} />
           <Route path='/EditProduct/:id' element={<EditProduct />} />
