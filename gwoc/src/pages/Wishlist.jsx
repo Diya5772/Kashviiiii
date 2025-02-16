@@ -88,7 +88,7 @@ const Wishlist = () => {
                 onClick={() => navigate(`/Product/${item.productId}`)} // Redirect to ShowProduct
               >
                 <img
-                  src={`http://localhost:5000${item.productImage}`}
+                  src={item.productImage}
                   alt={item.productName}
                   className="absolute inset-0 w-full h-full object-cover"
                 />

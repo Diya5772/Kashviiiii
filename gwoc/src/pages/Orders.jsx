@@ -86,7 +86,7 @@ const Orders = () => {
                                 {order.items.map((item) => (
                                     <div key={item.productId} className="border rounded-lg p-4">
                                         <img
-                                            src={`http://localhost:5000${item.productImage}`}
+                                            src={item.productImage}
                                             alt={item.productName}
                                             className="w-full h-48 object-cover rounded-lg mb-4"
                                         />

@@ -120,7 +120,7 @@ const Collection = () => {
           {products.map(product => (
             <div key={product._id} className="group cursor-pointer" onClick={() => handleProductClick(product._id)}>
               <div className="relative overflow-hidden">
-                <img src={`http://localhost:5000${product.image}`} alt={product.name} className="w-full h-[500px] object-cover" />
+                <img src={product.image} alt={product.name} className="w-full h-[500px] object-cover" />
                 <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4 opacity-0 group-hover:opacity-100 transition-all">
                   <button className="bg-white/70 p-2 rounded-full hover:bg-white/90"><img src={assets.cart_icon} alt="Cart" className="w-6 h-6" /></button>
                   <button onClick={(e) => { e.stopPropagation(); setWishlist(prev => ({ ...prev, [product._id]: !prev[product._id] })); }} className="bg-white/70 p-2 rounded-full hover:bg-white/90">

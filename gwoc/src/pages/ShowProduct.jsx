@@ -311,7 +311,7 @@ const ShowProduct = () => {
               onMouseMove={handleMouseMove}
             >
               <img
-                src={product.image ? `http://localhost:5000${product.image}` : "/api/placeholder/400/600"}
+                src={product.image ? product.image : "/api/placeholder/400/600"}
                 alt={product.name}
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-200"
                 style={{
@@ -327,15 +327,16 @@ const ShowProduct = () => {
                     transform: "translate(-50%, -50%)",
                   }}
                 >
-                  <img
-                    src={product.image ? `http://localhost:5000${product.image}` : "/api/placeholder/400/600"}
-                    alt={product.name}
-                    className="absolute w-[400%] h-[400%] max-w-none"
-                    style={{
-                      left: `${-zoomPosition.x * 4}%`,
-                      top: `${-zoomPosition.y * 4}%`,
-                    }}
-                  />
+<img
+  src={product.image ? product.image : "/api/placeholder/400/600"}
+  alt={product.name}
+  className="absolute w-[400%] h-[400%] max-w-none"
+  style={{
+    left: `${-zoomPosition.x * 4}%`,
+    top: `${-zoomPosition.y * 4}%`,
+  }}
+/>
+
                 </div>
               )}
             </div>
@@ -350,11 +351,12 @@ const ShowProduct = () => {
                 }`}
                 onClick={() => setSelectedImageIndex(index)}
               >
-                <img
-                  src={img ? `http://localhost:5000${img}` : "/api/placeholder/80/80"}
-                  alt={`Product view ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
+          <img
+  src={img ? img : "/api/placeholder/80/80"}
+  alt={`Product view ${index + 1}`}
+  className="w-full h-full object-cover"
+/>
+
               </button>
             ))}
           </div>

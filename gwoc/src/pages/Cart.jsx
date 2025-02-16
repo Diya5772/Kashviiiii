@@ -138,7 +138,7 @@ const Cart = () => {
                                             className="w-5 h-5 text-amber-600"
                                         />
                                         <img 
-                                            src={`http://localhost:5000${item.productImage}`} 
+                                            src={item.productImage} 
                                             alt={item.productName} 
                                             className="w-24 h-24 object-cover rounded"
                                         />

@@ -47,14 +47,37 @@ const Product = () => {
       formDataToSend.append("subCategory", formData.subCategory);
       formDataToSend.append("sizes", formData.sizes.join(","));
       formDataToSend.append("bestseller", formData.bestseller);
-      
-      // Add filters as JSON string
       formDataToSend.append("filters", JSON.stringify(formData.filters));
   
-      // Add image file (only if selected)
+      let imageUrl = null;
+  
+      // Handle image upload to Cloudinary
       if (formData.image) {
-        formDataToSend.append("image", formData.image);
+        const imageData = new FormData(); 
+        imageData.append("file", formData.image);
+        imageData.append("upload_preset", "Kashviii");
+        imageData.append("cloud_name", "dowlh9mli");
+  
+        const cloudinaryResponse = await fetch(
+          "https://api.cloudinary.com/v1_1/dowlh9mli/image/upload",
+          {
+            method: "POST",
+            body: imageData,
+          }
+        );
+  
+        const cloudinaryData = await cloudinaryResponse.json();
+        console.log("Cloudinary Response:", cloudinaryData); // Debugging
+        
+        if (cloudinaryData.secure_url) {
+          imageUrl = cloudinaryData.secure_url;
+          formDataToSend.append("image", imageUrl);
+        } else {
+          console.error("Image upload failed, secure_url not found.");
+        }
       }
+  
+      console.log("Final Image URL to be sent:", imageUrl);
   
       const response = await fetch("http://localhost:5000/api/product/add", {
         method: "POST",
@@ -72,6 +95,7 @@ const Product = () => {
       console.error("Error:", error);
     }
   };
+  
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,11 +150,10 @@ const Product = () => {
             <label htmlFor="image" className="font-medium">Upload Image</label>
             <input type="file" name="image" onChange={handleImageChange} accept="image/*" className="border p-2 rounded-md" />
             {formData.image && (
-  <div className="mt-2">
-    <img src={URL.createObjectURL(formData.image)} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
-  </div>
-)}
-
+              <div className="mt-2">
+                <img src={URL.createObjectURL(formData.image)} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
+              </div>
+            )}
           </div>
 
           {/* Category */}
