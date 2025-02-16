@@ -11,6 +11,7 @@ const ShowProduct = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [isZooming, setIsZooming] = useState(false);
+  const [hasSubmittedReview, setHasSubmittedReview] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -18,7 +19,6 @@ const ShowProduct = () => {
         const response = await fetch(`http://localhost:5000/api/product/${id}`);
         const data = await response.json();
         setProduct(data);
-        fetchSimilarProducts(data);
         fetchReviews();
         setLoading(false);
       } catch (error) {
@@ -42,17 +42,6 @@ const ShowProduct = () => {
     setZoomPosition({ x, y });
   };
 
-  const fetchSimilarProducts = async (currentProduct) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/products/similar?category=${currentProduct.category}&subCategory=${currentProduct.subCategory}&currentId=${currentProduct._id}`
-      );
-      const data = await response.json();
-      setSimilarProducts(data);
-    } catch (error) {
-      console.error("Error fetching similar products:", error);
-    }
-  };
 
 
 
@@ -141,7 +130,7 @@ const ShowProduct = () => {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/review/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -159,7 +148,7 @@ const ShowProduct = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${id}`);
+      const response = await fetch(`http://localhost:5000/api/review/${id}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -195,7 +184,7 @@ const ShowProduct = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/review/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -227,7 +216,7 @@ const ShowProduct = () => {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/review/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -258,7 +247,7 @@ const ShowProduct = () => {
 
     if (window.confirm("Are you sure you want to delete your review?")) {
       try {
-        const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+        const response = await fetch(`http://localhost:5000/api/review/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -389,93 +378,106 @@ const ShowProduct = () => {
       </div>
 
       <div className="mt-16">
-        <div className="border-b border-gray-200">
-          <div className="flex space-x-8">
-            <button
-              onClick={() => setActiveTab("about")}
-              className={`py-4 text-lg font-serif ${
-                activeTab === "about"
-                  ? "border-b-2 border-amber-600 text-amber-800"
-                  : "text-gray-500 hover:text-amber-600"
-              }`}
-            >
-              Product Details
-            </button>
-            <button
-              onClick={() => setActiveTab("reviews")}
-              className={`py-4 text-lg font-serif ${
-                activeTab === "reviews"
-                  ? "border-b-2 border-amber-600 text-amber-800"
-                  : "text-gray-500 hover:text-amber-600"
-              }`}
-            >
-              Reviews
-            </button>
-          </div>
-        </div>
+  {/* Tabs Section */}
+  <div className="border-b border-gray-200">
+    <div className="flex space-x-8">
+      <button
+        onClick={() => setActiveTab("about")}
+        className={`py-4 text-lg font-serif ${
+          activeTab === "about"
+            ? "border-b-2 border-amber-600 text-amber-800"
+            : "text-gray-500 hover:text-amber-600"
+        }`}
+      >
+        Product Details
+      </button>
+      <button
+        onClick={() => setActiveTab("reviews")}
+        className={`py-4 text-lg font-serif ${
+          activeTab === "reviews"
+            ? "border-b-2 border-amber-600 text-amber-800"
+            : "text-gray-500 hover:text-amber-600"
+        }`}
+      >
+        Reviews
+      </button>
+    </div>
+  </div>
 
-        <div className="py-8">
-          {activeTab === "about" && renderProductDetails()}
+  {/* Content Section */}
+  <div className="py-8">
+    {activeTab === "about" && renderProductDetails()}
 
-          {activeTab === "reviews" && (
-            <div>
-              <form onSubmit={submitReview} className="mb-8">
-                <div className="mb-4">
-                  <label className="block text-gray-700 mb-2">Rating</label>
-                  <div className="flex space-x-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setUserReview({ ...userReview, rating: star })}
-                        className={`text-2xl ${
-                          star <= userReview.rating ? "text-amber-400" : "text-gray-300"
-                        }`}
-                      >
-                        ★
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 mb-2">Your Review</label>
-                  <textarea
-                    value={userReview.comment}
-                    onChange={(e) => setUserReview({ ...userReview, comment: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-md"
-                    rows="4"
-                  />
-                </div>
+    {activeTab === "reviews" && (
+      <div>
+        {/* Review Submission Form */}
+        <form onSubmit={submitReview} className="mb-8">
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Rating</label>
+            <div className="flex space-x-2">
+              {[1, 2, 3, 4, 5].map((star) => (
                 <button
-                  type="submit"
-                  className="bg-amber-600 text-white px-6 py-2 rounded-md hover:bg-amber-700"
+                  key={star}
+                  type="button"
+                  onClick={() =>
+                    setUserReview((prev) => ({ ...prev, rating: star }))
+                  }
+                  className={`text-2xl ${
+                    star <= userReview.rating ? "text-amber-400" : "text-gray-300"
+                  }`}
                 >
-                  Submit Review
+                  ★
                 </button>
-              </form>
-
-              <div className="space-y-6">
-                {reviews.length > 0 ? (
-                  reviews.map((review) => (
-                    <div key={review._id} className="border-b pb-6">
-                      <div className="flex items-center mb-2">
-                        <div className="text-amber-400 mr-2">
-                          {"★".repeat(review.rating)}
-                          {"☆".repeat(5 - review.rating)}
-                        </div>
-                        <span className="text-gray-600">{review.userName}</span>
-                      </div>
-                      <p className="text-gray-700">{review.comment}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center text-gray-500">No reviews yet. Be the first to review!</p>
-                )}
-              </div>
+              ))}
             </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Your Review</label>
+            <textarea
+              value={userReview.comment}
+              onChange={(e) =>
+                setUserReview((prev) => ({ ...prev, comment: e.target.value }))
+              }
+              className="w-full px-3 py-2 border rounded-md"
+              rows="4"
+              placeholder="Write your review here..."
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-amber-600 text-white px-6 py-2 rounded-md hover:bg-amber-700"
+          >
+            Submit Review
+          </button>
+        </form>
+
+        {/* Display Reviews */}
+        <div className="space-y-6">
+          {reviews.length > 0 ? (
+            reviews.map((review) => (
+              <div key={review._id} className="border-b pb-6">
+                <div className="flex items-center mb-2">
+                  <div className="text-amber-400 mr-2">
+                    {"★".repeat(review.rating)}
+                    {"☆".repeat(5 - review.rating)}
+                  </div>
+                  <span className="text-gray-600">{review.userName}</span>
+                </div>
+                <p className="text-gray-700">{review.comment}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">
+              No reviews yet. Be the first to review!
+            </p>
           )}
         </div>
       </div>
+    )}
+  </div>
+</div>
+
 
       
     </div>

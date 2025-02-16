@@ -14,7 +14,7 @@ const AdminOrders = () => {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const response = await axios.get("http://localhost:5000/api/admin/order", {
+            const response = await axios.get("http://localhost:5000/api/order/admin", {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setOrders(response.data.orders);
@@ -30,7 +30,7 @@ const AdminOrders = () => {
     const updateOrderStatus = async (orderId, newStatus) => {
         try {
             await axios.patch(
-                `http://localhost:5000/api/admin/order/${orderId}`,
+                `http://localhost:5000/api/order/admin/${orderId}`,
                 { status: newStatus },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

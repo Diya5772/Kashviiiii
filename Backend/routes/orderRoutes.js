@@ -171,7 +171,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 // In your Express backend routes
-router.get('/api/admin/order', authMiddleware, adminMiddleware, async (req, res) => {
+router.get('/admin', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const orders = await Order.find()
             .populate('user', 'name email')
@@ -182,7 +182,7 @@ router.get('/api/admin/order', authMiddleware, adminMiddleware, async (req, res)
     }
 });
 
-router.patch('/api/admin/order/:orderId', authMiddleware, adminMiddleware, async (req, res) => {
+router.patch('/admin/:orderId', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const order = await Order.findByIdAndUpdate(
             req.params.orderId,
