@@ -22,6 +22,7 @@ import Contact from './pages/Contact';
 import AdminOrders from './pages/AdminOrders';
 import UsersPage from "./pages/UsersPage";
 import ProductsPage from "./pages/ProductsPage";
+
 const App = () => {
 
   return (
@@ -49,6 +50,7 @@ const App = () => {
           <Route path='/AdminOrders' element={<AdminOrders />} />
           <Route path="/admin/users" element={<UsersPage />} />
           <Route path="/admin/products" element={<ProductsPage />} />
+         
           
 
         </Routes>

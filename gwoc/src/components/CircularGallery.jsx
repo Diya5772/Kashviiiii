@@ -479,6 +479,6 @@ export default function CircularGallery({
     };
   }, [items, bend, textColor, borderRadius, font]);
   return (
-    <div className='w-full h-[800px] overflow-hidden cursor-grab active:cursor-grabbing' ref={containerRef} />
+    <div className='w-full h-[700px] overflow-hidden cursor-grab active:cursor-grabbing' ref={containerRef} />
   );
 }

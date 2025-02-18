@@ -10,12 +10,12 @@ export default function FAQ() {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/faq/all"); // Adjust the API URL if needed
+        const response = await fetch("http://localhost:5000/api/faq/all");
         if (!response.ok) {
           throw new Error("Failed to fetch FAQs");
         }
         const data = await response.json();
-        setFaqs(data.reverse()); // Ensures the latest added FAQ appears first
+        setFaqs(data.reverse());
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -33,19 +33,43 @@ export default function FAQ() {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Frequently Asked Questions</h2>
+    <div className="max-w-4xl mx-auto px-6 py-12">
+      {/* Header Section */}
+      <div className="text-center mb-16 space-y-2">
+        <h2 className="text-4xl font-serif text-[#2D2B29]">FAQ</h2>
+        <p className="text-lg uppercase tracking-wide text-[#2D2B29]">WHAT IS..</p>
+      </div>
+
+      {/* FAQ Items */}
       <div className="space-y-4">
         {faqs.map((faq, index) => (
-          <div key={faq._id} className="border rounded-lg p-4">
+          <div 
+            key={faq._id} 
+            className="border-b border-[#E5E5E5] last:border-b-0"
+          >
             <button
-              className="flex justify-between items-center w-full text-left text-lg font-medium"
+              className="w-full py-6 flex justify-between items-center text-left"
               onClick={() => toggleFAQ(index)}
             >
-              {faq.question}
-              {openIndex === index ? <ChevronUp /> : <ChevronDown />}
+              <span className="text-lg font-medium text-[#2D2B29]">
+                {faq.question}
+              </span>
+              <span className="text-[#2D2B29] ml-4">
+                {openIndex === index ? (
+                  <ChevronUp className="w-6 h-6" />
+                ) : (
+                  <ChevronDown className="w-6 h-6" />
+                )}
+              </span>
             </button>
-            {openIndex === index && <p className="mt-2 text-gray-600">{faq.answer}</p>}
+            
+            {openIndex === index && (
+              <div className="pb-6">
+                <p className="text-[#2D2B29] leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            )}
           </div>
         ))}
       </div>

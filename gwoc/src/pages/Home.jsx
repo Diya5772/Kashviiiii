@@ -7,8 +7,8 @@ import home3 from '../assets/Home3.jpg';
 import Navbar from '../components/navbar';
 import CircularGallery from '../components/CircularGallery';
 import video from '../assets/video.mp4';
-import galleryBg from '../assets/1.jpg'; 
-import footer_bg from '../assets/FOOTER_IMAGE.avif'; 
+import galleryBg from '../assets/background.jpg';
+import footer_bg from '../assets/FOOTER_IMAGE.avif';
 import FAQ from '../components/FAQ';
 const HomePage = () => {
   const categories = [
@@ -38,42 +38,82 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
-      
-      <div className="min-w-full w-full min-h-screen pt-16 bg-[#DCD7C9]">
+
+      <div className="min-w-full w-full min-h-screen pt-16 bg-[#F8F3D9]">
         {/* Hero Section */}
         <div className="relative w-full min-h-screen flex items-end justify-start bg-black">
-          <img
-            src={images[currentImage]}
-            alt="Hero"
-            className="absolute top-0 left-0 w-full h-full object-cover opacity-90"
-          />
-          <div className="relative w-full text-left bg-black bg-opacity-50">
-            <div className="absolute bottom-0 left-0 w-full h-full flex items-end justify-start">
-              <div className="absolute bottom-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
-              <div className="relative z-20 px-2 py-2">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ color: '#F5F5F5', fontFamily: 'EB Garamond' }}>
-                  KASHVI CREATION
-                </h1>
-                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-4" style={{ color: '#F5F5F5', fontFamily: 'EB Garamond' }}>
-                  Since 2022
-                </p>
-                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-4" style={{ color: '#F5F5F5', fontFamily: 'EB Garamond' }}>
-                  “प्रेम और विश्वास का अनोखा संगम”
-                </p>
-                <button 
-  className="bg-[#3F4F44] text-black px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 lg:px-12 lg:py-6 rounded-none hover:bg-gray-200" 
-  style={{ fontSize: '1.5rem' }}
-  onClick={() => window.location.href = '/collection'}
->
-  Shop Collection
-</button>
-              </div>
-            </div>
+  {/* Background Image */}
+  <img
+    src={images[currentImage]}
+    alt="Hero"
+    className="absolute top-0 left-0 w-full h-full object-cover opacity-80"
+  />
+
+  {/* Gradient Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+
+  {/* Content Container */}
+  <div className="relative w-full text-left px-10 py-16">
+    <div className="relative z-20 max-w-3xl">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide text-[#DCD7C9] opacity-90">
+        KASHVI CREATION
+      </h1>
+      <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-[#DCD7C9] opacity-80 mt-2">
+        Since 2022
+      </p>
+      <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-[#DCD7C9] opacity-75 mt-4 italic">
+        “प्रेम और विश्वास का अनोखा संगम”
+      </p>
+
+      {/* Shop Collection Button */}
+      <button
+        className="mt-6 px-8 py-3 sm:px-10 sm:py-4 md:px-12 md:py-5 lg:px-14 lg:py-6 text-lg sm:text-xl font-light text-[#F5E1C8] border border-[#F5E1C8] backdrop-blur-md bg-transparent hover:bg-[#F5E1C8] hover:text-black transition-all duration-300"
+        onClick={() => window.location.href = '/collection'}
+      >
+        Shop Collection
+      </button>
+    </div>
+  </div>
+</div>
+
+<div className="max-w-full  mx-16 px-4 py-16 flex flex-col lg:flex-row items-center bg-[#F8F3D9] justify-between gap-12">
+      {/* Left Column - Title and Heading */}
+      <div className="lg:w-1/2 space-y-6">
+        <div className="space-y-4">
+          <h2 className="text-sm uppercase tracking-wider text-gray-600">
+            SINGHANIA'S CHRONICLES
+          </h2>
+          <h1 className="text-4xl lg:text-5xl font-serif text-gray-900 leading-tight">
+            Discover Luxury: Premium & Authentic Sarees, a Treasure Trove of Handlooms in Vivid Weaves and Crafts, Crafted in Finest Silks.
+          </h1>
+        </div>
+      </div>
+
+      {/* Right Column - Description and Button */}
+      <div className="lg:w-1/2 space-y-8">
+        <div className="relative">
+          {/* Decorative Elements */}
+          <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 space-y-4">
+            <div className="h-16 w-0.5 bg-gray-300"></div>
+            <div className="h-16 w-0.5 bg-gray-300"></div>
+          </div>
+          
+          {/* Content */}
+          <div className="pl-8 m-20">
+            <p className="text-lg text-gray-700 m-6 leading-relaxed mb-16">
+              At Singhania's, you will find hand woven drapes that suit the modern woman who upholds the subtle art of weaving and keeps it at the highest pedestal. We cater to this woman who considers the humble six yards as a piece of Indian heritage.
+              <button className="border-2 mt-8 border-gray-900 px-8 py-3 text-gray-900 hover:bg-gray-900 hover:text-white transition-colors duration-300">
+          Learn More
+        </button>
+            </p>
+
           </div>
         </div>
-
+      
+      </div>
+    </div>
         {/* Circular Gallery Section */}
-        <div className="w-full py-8 bg-[#DCD7C9] relative">
+        <div className="w-full py-8 h-[#500] bg-[#F8F3D9] relative">
           {/* Background Image */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 z-0"
@@ -81,7 +121,7 @@ const HomePage = () => {
           ></div>
 
           <div className="w-full px-4 relative z-10 mb-8">
-            <h2 className="text-3xl font-bold mb-12 text-center">Explore Our Collection</h2>
+            <h2 className="text-5xl lg:text-5xl font-serif text-[#504B38] leading-tight mb-12 text-center font-center">Explore Our Collection</h2>
             <CircularGallery
               items={[
                 { image: home3, text: 'Silk Sarees' },
@@ -96,20 +136,20 @@ const HomePage = () => {
             />
           </div>
         </div>
-<div>
-  <FAQ/>
-</div>
+        <div>
+          <FAQ />
+        </div>
         {/* Featured Products Section */}
         <div className="w-full py-16 bg-[#DCD7C9]">
           <div className="w-full px-4">
             <div className="flex justify-between items-center mb-12">
-              <h2 className="text-3xl font-bold">Featured Products</h2>
-              <button 
-  className="flex items-center text-gray-600 hover:text-gray-900"
-  onClick={() => (window.location.href = '/collection')}
->
-  View All <ChevronRight className="h-5 w-5 ml-2" />
-</button>
+              <h2 className="text-5xl lg:text-5xl font-serif text-[#504B38] leading-tight mb-12 text-center font-center">Featured Products</h2>
+              <button
+                className="flex items-center text-gray-600 hover:text-gray-900"
+                onClick={() => (window.location.href = '/collection')}
+              >
+                View All <ChevronRight className="h-5 w-5 ml-2" />
+              </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {featuredProducts.map((product) => (
@@ -120,7 +160,7 @@ const HomePage = () => {
                       alt={product.name}
                       className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                
+
                   </div>
                   <div className="p-4 bg-[#A27B5C] rounded-lg">
                     <h3 className="text-lg font-semibold">{product.name}</h3>
@@ -135,7 +175,7 @@ const HomePage = () => {
         {/* Video Section */}
         <div className="w-full">
           <div className="relative w-full h-[600px] bg-gray-800">
-            <video className="absolute top-0 left-0 w-full h-full object-cover" autoPlay  muted loop>
+            <video className="absolute top-0 left-0 w-full h-full object-cover" autoPlay muted loop>
               <source src={video} type="video/mp4" />
               Your browser does not support the video tag.
             </video>

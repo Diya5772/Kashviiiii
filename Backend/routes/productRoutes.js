@@ -77,6 +77,32 @@ router.post("/add", upload.single("image"), async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+router.post("/search", async (req, res) => {
+  try {
+      const { searchQuery, selectedFilters } = req.body;
+      let query = {};
+
+      // Search by product name
+      if (searchQuery) {
+          query.name = { $regex: searchQuery, $options: "i" };
+      }
+
+      // Apply filters dynamically
+      if (selectedFilters) {
+          Object.entries(selectedFilters).forEach(([key, value]) => {
+              if (value) {
+                  query[`filters.${key}`] = value;
+              }
+          });
+      }
+
+      const products = await Product.find(query);
+      res.json(products);
+  } catch (error) {
+      console.error("Error searching products:", error);
+      res.status(500).json({ message: "Server error" });
+  }
+});
 
 // 2️⃣ Get All Products
 router.get("/all", async (req, res) => {
