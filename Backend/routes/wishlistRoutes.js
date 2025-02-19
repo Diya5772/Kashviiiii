@@ -46,7 +46,79 @@ router.post("/add", verifyUser, async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 });
+// Add this new endpoint to your existing wishlist routes
+router.get("/top-products", verifyUser, async (req, res) => {
+    try {
+        console.log('Fetching top wishlisted products...');
+        
+        const trendingProducts = await Wishlist.aggregate([
+            // Unwind the items array to get individual items
+            { $unwind: "$items" },
+            // Group by productId and count occurrences
+            {
+                $group: {
+                    _id: "$items.productId",
+                    productName: { $first: "$items.productName" },
+                    productImage: { $first: "$items.productImage" },
+                    price: { $first: "$items.price" },
+                    wishlistCount: { $sum: 1 }
+                }
+            },
+            // Sort by count in descending order
+            { $sort: { wishlistCount: -1 } },
+            // Get top 5 most wishlisted products
+            { $limit: 5 }
+        ]);
 
+        console.log('Trending products found:', trendingProducts);
+
+        res.status(200).json({
+            success: true,
+            wishlist: {
+                items: trendingProducts
+            }
+        });
+    } catch (error) {
+        console.error("Get Trending Products Error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error fetching trending products"
+        });
+    }
+});
+router.get("/trending-products", async (req, res) => {
+    try {
+        const trendingProducts = await Wishlist.aggregate([
+            // Unwind the items array
+            { $unwind: "$items" },
+            // Group by productId and count occurrences
+            {
+                $group: {
+                    _id: "$items.productId",
+                    productName: { $first: "$items.productName" },
+                    productImage: { $first: "$items.productImage" },
+                    price: { $first: "$items.price" },
+                    wishlistCount: { $sum: 1 }
+                }
+            },
+            // Sort by wishlistCount in descending order
+            { $sort: { wishlistCount: -1 } },
+            // Get top 5 products
+            { $limit: 5 }
+        ]);
+
+        res.status(200).json({
+            success: true,
+            trendingProducts
+        });
+    } catch (error) {
+        console.error("Get Trending Products Error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+});
 // **2. Get User Wishlist**
 router.get("/", verifyUser, async (req, res) => {
     try {

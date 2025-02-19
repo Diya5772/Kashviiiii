@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Send } from "lucide-react"; // Import the Send icon
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const token = localStorage.getItem("token");
-
-    const adminPhoneNumber = "9461458024"; // Admin phone number
 
     useEffect(() => {
         fetchOrders();
@@ -28,22 +25,28 @@ const Orders = () => {
         }
     };
 
-    const sendOrderDetailsToAdmin = (order) => {
-        const orderDetails = `
-            New Order Placed:
-            Order ID: ${order._id.substring(0, 8)}
-            Customer: ${order.user.name}
-            Email: ${order.user.email}
-            Phone: ${order.user.phone}
-            Order Items:
-            ${order.items.map(item => `Product: ${item.productName}, Quantity: ${item.quantity}`).join('\n')}
-            Total Amount: ₹${order.totalAmount}
-            Status: ${order.status}
-        `;
+    const downloadInvoice = async (orderId) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:5000/api/order/${orderId}/invoice`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    responseType: 'blob'
+                }
+            );
 
-        const whatsappMessage = encodeURIComponent(orderDetails);
-        const whatsappUrl = `https://wa.me/${adminPhoneNumber}?text=${whatsappMessage}`;
-        window.open(whatsappUrl, "_blank");
+            // Create blob link to download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `invoice-${orderId}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error("Error downloading invoice:", error);
+            alert("Failed to download invoice");
+        }
     };
 
     if (loading) {
@@ -72,11 +75,10 @@ const Orders = () => {
                                     </p>
                                 </div>
                                 <button
-                                    onClick={() => sendOrderDetailsToAdmin(order)}
-                                    className="bg-[#3F4F44] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-opacity-90"
+                                    onClick={() => downloadInvoice(order._id)}
+                                    className="bg-amber-100 text-amber-800 px-4 py-2 rounded-lg hover:bg-amber-200 transition-colors duration-200"
                                 >
-                                    <Send className="h-5 w-5" />
-                                    Send to WhatsApp
+                                    Download Invoice
                                 </button>
                             </div>
 

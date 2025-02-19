@@ -10,6 +10,7 @@ import video from '../assets/video.mp4';
 import galleryBg from '../assets/background.jpg';
 import footer_bg from '../assets/FOOTER_IMAGE.avif';
 import FAQ from '../components/FAQ';
+import TrendingProducts from '../components/TreandingProducts';
 const HomePage = () => {
   const categories = [
     { name: 'Silk Sarees', count: '120+' },
@@ -76,7 +77,7 @@ const HomePage = () => {
   </div>
 </div>
 
-<div className="max-w-full  mx-16 px-4 py-16 flex flex-col lg:flex-row items-center bg-[#F8F3D9] justify-between gap-12">
+<div className="max-w-full  mx-16 px-4 py-10 flex flex-col lg:flex-row items-center bg-[#F8F3D9] justify-between gap-12 mb-5">
       {/* Left Column - Title and Heading */}
       <div className="lg:w-1/2 space-y-6">
         <div className="space-y-4">
@@ -112,6 +113,13 @@ const HomePage = () => {
       
       </div>
     </div>
+    {/* Decorative line */}
+<div className="w-full flex justify-center items-center py-4 bg-[#F8F3D9]">
+  <div className="w-1/2 h-[2px] bg-gradient-to-r from-transparent via-[#8B4513] to-transparent"></div>
+</div>
+    <div>
+<TrendingProducts/>
+  </div>
         {/* Circular Gallery Section */}
         <div className="w-full py-8 h-[#500] bg-[#F8F3D9] relative">
           {/* Background Image */}

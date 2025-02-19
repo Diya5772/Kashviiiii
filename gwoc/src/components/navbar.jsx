@@ -38,21 +38,21 @@ const Navbar = () => {
           <Link to="/">
             <img src={logo} alt="Logo" className="w-16" />
           </Link>
-          <NavLink to="/" className="text-white hover:text-[#A27B5C] transition duration-300">Home</NavLink>
-          <NavLink to="/Contact" className="text-white hover:text-[#A27B5C] transition duration-300">Contact</NavLink>
-          <NavLink to="/Collection" className="text-white hover:text-[#A27B5C] transition duration-300">Collection</NavLink>
+          <NavLink to="/" className="text-[#A27B5C] transition duration-300">Home</NavLink>
+          <NavLink to="/Contact" className="text-[#A27B5C] transition duration-300">Contact</NavLink>
+          <NavLink to="/Collection" className="text-[#A27B5C] transition duration-300">Collection</NavLink>
         </div>
         
         {/* Center - Brand Name (Responsive) */}
         <Link to="/" className="flex flex-col items-center justify-center leading-none absolute left-1/2 transform -translate-x-1/2">
-          <span className="text-3xl font-light tracking-[0.3em] text-white lg:text-2xl md:text-xl sm:text-lg">KASHVI</span>
-          <span className="text-sm font-light tracking-[0.2em] text-gray-300 lg:text-xs md:text-xs sm:text-xs">CREATION</span>
+          <span className="text-3xl font-light tracking-[0.3em] text-[#A27B5C] lg:text-2xl md:text-xl sm:text-lg">KASHVI</span>
+          <span className="text-sm font-light tracking-[0.2em] text-[#A27B5C] lg:text-xs md:text-xs sm:text-xs">CREATION</span>
         </Link>
         
         {/* Right Navigation and Controls */}
         <div className="hidden md:flex items-center gap-8">
-          <NavLink to="/Blogs" className="text-white hover:text-[#A27B5C] transition duration-300">Blogs</NavLink>
-          <NavLink to="/AboutUs" className="text-white hover:text-[#A27B5C] transition duration-300">About Us</NavLink>
+          <NavLink to="/Blogs" className="text-[#A27B5C] transition duration-300">Blogs</NavLink>
+          <NavLink to="/AboutUs" className="text-[#A27B5C] transition duration-300">About Us</NavLink>
           <div className="flex items-center gap-4">
             <img src={assets.search_icon} className="w-6 cursor-pointer" alt="Search" />
             
@@ -66,7 +66,7 @@ const Navbar = () => {
               <div className="relative" ref={dropdownRef}>
                 {/* Profile Circle with Initials */}
                 <div 
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold cursor-pointer border-2 border-[#A27B5C]"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#A27B5C] font-bold cursor-pointer border-2 border-[#A27B5C]"
                   style={{ backgroundColor: user.email.length % 2 === 0 ? "#A27B5C" : "#8B6B4F" }}
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
@@ -83,9 +83,9 @@ const Navbar = () => {
                     </div>
                     
                     {/* Links */}
-                    <Link to="/profile" className="block py-1 hover:text-[#A27B5C]">My Profile</Link>
-                    <Link to="/orders" className="block py-1 hover:text-[#A27B5C]">Orders</Link>
-                    <button onClick={handleLogout} className="block py-1 text-left hover:text-[#A27B5C] w-full">Logout</button>
+                    <Link to="/profile" className="block py-1 text-[#A27B5C]">My Profile</Link>
+                    <Link to="/orders" className="block py-1 text-[#A27B5C]">Orders</Link>
+                    <button onClick={handleLogout} className="block py-1 text-left text-[#A27B5C] w-full">Logout</button>
                   </div>
                 )}
               </div>

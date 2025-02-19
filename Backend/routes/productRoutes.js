@@ -155,8 +155,90 @@ router.post("/product", async (req, res) => {
     res.status(500).json({ error: "Failed to add product" });
   }
 });
+// Backend route
+// Backend route - Add this to your routes file
+router.post('/similar', async (req, res) => {
+  try {
+      const { excludeId, category, filters } = req.body;
+      console.log("Received request data:", { excludeId, category, filters });
 
-// 6️⃣ Update Product (Including Cloudinary Image Upload)
+      // Validate input
+      if (!excludeId || !category) {
+          console.log("Missing required fields");
+          return res.status(400).json({ message: 'Missing required fields' });
+      }
+
+      // Find products in the same category
+      const query = {
+          _id: { $ne: excludeId },
+          category: category
+      };
+
+      console.log("Executing query:", query);
+
+      const products = await Product.find(query);
+      console.log(`Found ${products.length} products in category`);
+
+      if (!products.length) {
+          return res.json([]);
+      }
+
+      // Calculate similarity scores
+      const similarProducts = products.map(product => {
+          let matchCount = 0;
+          let totalFilters = 0;
+
+          // Compare filters if they exist
+          if (filters && product.filters) {
+              const filterKeys = [
+                  'border',
+                  'Border Type',
+                  'Fabric Purity',
+                  'Material',
+                  'Occasion',
+                  'Oranamentation Type',
+                  'Pattern',
+                  'Color',
+                  'Technique',
+                  'Zari Color',
+                  'Zari Type'
+              ];
+
+              filterKeys.forEach(key => {
+                  if (filters[key] && product.filters[key]) {
+                      totalFilters++;
+                      if (filters[key] === product.filters[key]) {
+                          matchCount++;
+                      }
+                  }
+              });
+          }
+
+          const similarity = totalFilters > 0 ? matchCount / totalFilters : 0;
+
+          return {
+              _id: product._id,
+              name: product.name,
+              image: product.image,
+              price: product.price,
+              similarity
+          };
+      });
+
+      // Filter and sort by similarity
+      const highSimilarityProducts = similarProducts
+          .filter(product => product.similarity >= 0.6)
+          .sort((a, b) => b.similarity - a.similarity)
+          .slice(0, 4);
+
+      console.log(`Sending ${highSimilarityProducts.length} similar products`);
+      res.json(highSimilarityProducts);
+
+  } catch (error) {
+      console.error('Error in similar products route:', error);
+      res.status(500).json({ message: 'Error finding similar products' });
+  }
+});
 router.put("/product/:id", upload.single("image"), async (req, res) => {
   try {
     console.log("Update Request Data:", req.body); // 🔥 Debugging
