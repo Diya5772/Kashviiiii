@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion";
 import xMarkIcon from "../assets/assets/xmark-solid.svg";
 import angleDownIcon from "../assets/assets/angle-down-solid.svg";
 import { assets } from "../assets/assets/frontend_assets/assets";
 import heartIcon from "../assets/assets/heart_icon.svg";
 import heartIconSolid from "../assets/assets/heart-solid.svg";
 import Navbar from "../components/navbar";
-import search_icon from "../assets/magnifying-glass.svg";  // Updated path to match your actual file location
+
 const filtersList = [
   { label: 'Category', options: ['Silk Sarees', 'Cotton Sarees', 'Designer Sarees', 'Traditional Sarees'] },
   { label: 'Border', options: ['Broad Border', 'Medium Border', 'Small Border'] },
@@ -20,7 +21,7 @@ const filtersList = [
   { label: 'Color', options: ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Pink', 'Purple', 'Gold', 'Silver'] },
   { label: 'Technique', options: ['Handloom', 'Powerloom', 'Block Print', 'Digital Print'] },
   { label: 'Zari Color', options: ['Gold Zari', 'Silver Zari', 'Copper Zari', 'Antique Zari'] },
-  { label: 'Zari Type', options: ['Pure Zari', 'Tested Zari', 'Imitation Zari'] }
+  { label: 'Zari Type', options: ['Pure Zari', 'Tested Zari', 'Imitation Zari'] },
 ];
 
 const Collection = () => {
@@ -28,71 +29,20 @@ const Collection = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [openFilter, setOpenFilter] = useState(null);
   const [wishlist, setWishlist] = useState({});
-  const [searchTerm, setSearchTerm] = useState("");
-  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-    filterProducts();
-  }, [searchTerm, products, selectedFilters]);
-
   const fetchProducts = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/product/all");
       setProducts(response.data);
-      setDisplayedProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  };
-
-  const filterProducts = () => {
-    let filteredProducts = [...products];
-
-    // Apply search term filter
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      filteredProducts = filteredProducts.filter(product => {
-        // Search in product name
-        const nameMatch = product.name.toLowerCase().includes(searchLower);
-        
-        // Search in product categories and other attributes
-        const categoryMatch = Object.entries(product).some(([key, value]) => {
-          if (typeof value === 'string') {
-            return value.toLowerCase().includes(searchLower);
-          }
-          return false;
-        });
-
-        // Search in selected filters
-        const filterMatch = Object.values(selectedFilters).some(filter => 
-          filter.toLowerCase().includes(searchLower)
-        );
-
-        return nameMatch || categoryMatch || filterMatch;
-      });
-    }
-
-    // Apply selected filters
-    if (Object.keys(selectedFilters).length > 0) {
-      filteredProducts = filteredProducts.filter(product => {
-        return Object.entries(selectedFilters).every(([key, value]) => {
-          return product[key.toLowerCase()] === value || 
-                 product.category === value || 
-                 product.attributes?.[key.toLowerCase()] === value;
-        });
-      });
-    }
-
-    setDisplayedProducts(filteredProducts);
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
   };
 
   const handleProductClick = (id) => navigate(`/product/${id}`);
@@ -117,7 +67,7 @@ const Collection = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/product/filter", selectedFilters);
       setProducts(response.data);
-      filterProducts();
+      setIsFilterOpen(false);
     } catch (error) {
       console.error("Error applying filters:", error);
     }
@@ -125,125 +75,283 @@ const Collection = () => {
 
   const resetFilters = () => {
     setSelectedFilters({});
-    setSearchTerm("");
     fetchProducts();
   };
 
   return (
-    <div className="font-poppins">
+    <div className="font-poppins bg-[#FBF9F6]">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-4 mt-24">
-        {/* Search and Filter Header */}
-        <div className="flex flex-col gap-4 mb-6">
-          {/* Search Bar */}
-          <div className="relative w-full max-w-xl mx-auto">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Search products by name, category, or any attribute..."
-              className="w-full px-4 py-2 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-[#B5865E] focus:ring-1 focus:ring-[#B5865E]"
-            />
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <img src={search_icon} alt="Search" className="w-5 h-5 text-gray-400" />
-            </div>
-          </div>
-
-          {/* Filter Header */}
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl text-gray-700">
-              {searchTerm ? `Search Results for "${searchTerm}"` : 
-               Object.keys(selectedFilters).length ? "Filtered Products" : "All Products"}
-              <span className="text-sm text-gray-500 ml-2">
-                ({displayedProducts.length} items)
-              </span>
-            </h2>
+      {/* Hero Section */}
+      <div className="relative w-full h-[60vh]">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=2574')",
+            backgroundPosition: "center 30%"
+          }}
+        >
+          <div className="absolute inset-0 bg-black opacity-40"></div>
+        </div>
+        
+        <div className="relative h-full flex flex-col justify-center items-center text-center px-4 z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4">
+              Exquisite Collection of Sarees
+            </h1>
+            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Discover our handpicked selection of traditional and contemporary sarees
+            </p>
             <button 
-              onClick={resetFilters} 
-              className="text-[#B5865E] hover:text-[#8e6446] flex items-center"
+              onClick={() => {
+                const productsSection = document.getElementById('products-section');
+                productsSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-white text-gray-900 px-8 py-3 rounded-md hover:bg-gray-100 transition-colors"
             >
-              Clear All <img src={xMarkIcon} alt="Reset" className="w-4 h-4 ml-2" />
+              Explore Collection
             </button>
+          </motion.div>
+        </div>
+      </div>
+      
+      <div id="products-section" className="max-w-7xl mx-auto px-4 py-4">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h2 className="text-2xl text-gray-800">
+              {Object.keys(selectedFilters).length ? "Filtered Collection" : "All Collection"}
+            </h2>
+            <p className="text-gray-500 mt-1">{products.length} items</p>
+          </div>
+          
+          <div className="flex gap-4">
+            <button 
+              onClick={() => setIsFilterOpen(true)}
+              className="md:hidden px-4 py-2 border border-[#3B82F6] text-[#3B82F6] rounded-md"
+            >
+              Filters
+            </button>
+            
+            {Object.keys(selectedFilters).length > 0 && (
+              <button 
+                onClick={resetFilters} 
+                className="text-[#3B82F6] hover:text-[#2563EB] flex items-center"
+              >
+                Clear All <img src={xMarkIcon} alt="Reset" className="w-4 h-4 ml-2" />
+              </button>
+            )}
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto flex gap-8">
-          {/* Filters Section */}
-          <div className="w-64">
-            {filtersList.map((filter) => (
-              <div key={filter.label} className="mb-4 border-b border-gray-200">
+        {/* Mobile Filter Modal */}
+        {isFilterOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+            <div className="bg-white w-80 h-full overflow-y-auto p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-medium">Filters</h2>
                 <button 
-                  onClick={() => toggleFilter(filter.label)} 
-                  className="w-full flex justify-between py-2 text-gray-700"
+                  onClick={() => setIsFilterOpen(false)}
+                  className="text-gray-500 hover:text-gray-700"
                 >
-                  {filter.label}
-                  <img 
-                    src={angleDownIcon} 
-                    alt="Toggle" 
-                    className={`w-4 h-4 ${openFilter === filter.label ? "rotate-180" : ""}`} 
-                  />
+                  <img src={xMarkIcon} alt="Close" className="w-6 h-6" />
                 </button>
-                {openFilter === filter.label && (
-                  <div className="py-2">
-                    {filter.options.map(option => (
-                      <div key={option} className="flex items-center py-1">
-                        <input
-                          type="checkbox"
-                          id={option}
-                          onChange={() => handleFilterClick(filter.label, option)}
-                          checked={selectedFilters[filter.label] === option}
-                          className="mr-3 accent-[#B5865E]"
-                        />
-                        <label htmlFor={option} className="text-gray-600">{option}</label>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-            ))}
-            <button 
-              onClick={applyFilters} 
-              className="w-full bg-[#B5865E] text-white py-2 px-4 hover:bg-[#8e6446]"
-            >
-              Apply Filters
-            </button>
+              {filtersList.map((filter) => (
+                <div key={filter.label} className="mb-6 border-b border-gray-100 pb-4">
+                  <button 
+                    onClick={() => toggleFilter(filter.label)}
+                    className={`w-full flex justify-between items-center py-2 transition-colors ${
+                      selectedFilters[filter.label] 
+                        ? 'text-[#3B82F6] font-medium' 
+                        : 'text-gray-700 hover:text-[#3B82F6]'
+                    }`}
+                  >
+                    <span className="font-medium">
+                      {filter.label}
+                      {selectedFilters[filter.label] && (
+                        <span className="ml-2 text-sm">
+                          ({selectedFilters[filter.label]})
+                        </span>
+                      )}
+                    </span>
+                    <img 
+                      src={angleDownIcon} 
+                      alt="Toggle" 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        openFilter === filter.label ? "rotate-180" : ""
+                      } ${selectedFilters[filter.label] ? "text-[#3B82F6]" : ""}`}
+                    />
+                  </button>
+                  
+                  {openFilter === filter.label && (
+                    <div className="mt-2 space-y-1">
+                      {filter.options.map(option => (
+                        <div 
+                          key={option} 
+                          className={`rounded-md transition-all duration-300 ${
+                            selectedFilters[filter.label] === option 
+                              ? 'bg-blue-50 border-l-4 border-[#3B82F6]' 
+                              : 'hover:bg-gray-50'
+                          }`}
+                        >
+                          <label className="flex items-center px-3 py-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              onChange={() => handleFilterClick(filter.label, option)}
+                              checked={selectedFilters[filter.label] === option}
+                              className="w-4 h-4 rounded border-gray-300 text-[#3B82F6] focus:ring-[#3B82F6]"
+                            />
+                            <span className={`ml-3 text-sm ${
+                              selectedFilters[filter.label] === option 
+                                ? 'text-[#3B82F6] font-medium' 
+                                : 'text-gray-600'
+                            }`}>
+                              {option}
+                            </span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              <button 
+                onClick={applyFilters}
+                className={`w-full py-3 rounded-md transition-colors ${
+                  Object.keys(selectedFilters).length > 0
+                    ? 'bg-[#3B82F6] hover:bg-[#2563EB] text-white'
+                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
+                disabled={Object.keys(selectedFilters).length === 0}
+              >
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="flex gap-8">
+          {/* Sticky Filters Sidebar */}
+          <div className="hidden md:block w-64" style={{ position: 'sticky', top: '100px', height: 'calc(100vh - 100px)', overflowY: 'auto' }}>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              {filtersList.map((filter) => (
+                <div key={filter.label} className="mb-6 border-b border-gray-100 pb-4">
+                  <button 
+                    onClick={() => toggleFilter(filter.label)}
+                    className={`w-full flex justify-between items-center py-2 transition-colors ${
+                      selectedFilters[filter.label] 
+                        ? 'text-[#3B82F6] font-medium' 
+                        : 'text-gray-700 hover:text-[#3B82F6]'
+                    }`}
+                  >
+                    <span className="font-medium">
+                      {filter.label}
+                      {selectedFilters[filter.label] && (
+                        <span className="ml-2 text-sm">
+                          ({selectedFilters[filter.label]})
+                        </span>
+                      )}
+                    </span>
+                    <img 
+                      src={angleDownIcon} 
+                      alt="Toggle" 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        openFilter === filter.label ? "rotate-180" : ""
+                      } ${selectedFilters[filter.label] ? "text-[#3B82F6]" : ""}`}
+                    />
+                  </button>
+                  
+                  {openFilter === filter.label && (
+                    <div className="mt-2 space-y-1">
+                      {filter.options.map(option => (
+                        <div 
+                          key={option} 
+                          className={`rounded-md transition-all duration-300 ${
+                            selectedFilters[filter.label] === option 
+                              ? 'bg-blue-50 border-l-4 border-[#3B82F6]' 
+                              : 'hover:bg-gray-50'
+                          }`}
+                        >
+                          <label className="flex items-center px-3 py-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              onChange={() => handleFilterClick(filter.label, option)}
+                              checked={selectedFilters[filter.label] === option}
+                              className="w-4 h-4 rounded border-gray-300 text-[#3B82F6] focus:ring-[#3B82F6]"
+                            />
+                            <span className={`ml-3 text-sm ${
+                              selectedFilters[filter.label] === option 
+                                ? 'text-[#3B82F6] font-medium' 
+                                : 'text-gray-600'
+                            }`}>
+                              {option}
+                            </span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              <button 
+                onClick={applyFilters}
+                className={`w-full py-3 rounded-md transition-colors ${
+                  Object.keys(selectedFilters).length > 0
+                    ? 'bg-[#3B82F6] hover:bg-[#2563EB] text-white'
+                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
+                disabled={Object.keys(selectedFilters).length === 0}
+              >
+                Apply Filters
+              </button>
+            </div>
           </div>
 
-          {/* Products Grid */}
-          <div className="flex-1 grid grid-cols-3 gap-8">
-            {displayedProducts.map(product => (
+          {/* Product Grid */}
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map(product => (
               <div 
                 key={product._id} 
-                className="group cursor-pointer" 
+                className="group cursor-pointer bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
                 onClick={() => handleProductClick(product._id)}
               >
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden aspect-[3/4]">
                   <img 
                     src={product.image} 
                     alt={product.name} 
-                    className="w-full h-[500px] object-cover" 
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4 opacity-0 group-hover:opacity-100 transition-all">
-                    <button className="bg-white/70 p-2 rounded-full hover:bg-white/90">
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <button 
+                      className="bg-white/90 p-3 rounded-full hover:bg-white shadow-lg transform hover:scale-110 transition-transform"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Add to cart functionality
+                      }}
+                    >
                       <img src={assets.cart_icon} alt="Cart" className="w-6 h-6" />
                     </button>
                     <button 
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        setWishlist(prev => ({ ...prev, [product._id]: !prev[product._id] })); 
-                      }} 
-                      className="bg-white/70 p-2 rounded-full hover:bg-white/90"
+                      className="bg-white/90 p-3 rounded-full hover:bg-white shadow-lg transform hover:scale-110 transition-transform"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setWishlist(prev => ({ ...prev, [product._id]: !prev[product._id] }));
+                      }}
                     >
                       <img 
-                        src={wishlist[product._id] ? heartIconSolid : heartIcon} 
-                        alt="Wishlist" 
-                        className="w-6 h-6" 
+                        src={wishlist[product._id] ? heartIconSolid : heartIcon}
+                        alt="Wishlist"
+                        className="w-6 h-6"
                       />
                     </button>
                   </div>
                 </div>
-                <div className="mt-4 text-center">
-                  <h3 className="text-gray-700 text-sm">{product.name}</h3>
+                <div className="p-4">
+                  <h3 className="text-gray-800 font-medium text-center">{product.name}</h3>
+                  <p className="text-[#3B82F6] text-center mt-2">₹{product.price}</p>
                 </div>
               </div>
             ))}
