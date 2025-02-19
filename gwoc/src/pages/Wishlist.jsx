@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
-
+import Navbar from "../components/navbar";
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState(null);
   const token = localStorage.getItem("token");
@@ -74,6 +74,7 @@ const Wishlist = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <Navbar/>
       <h2 className="text-3xl font-bold text-amber-800 mb-8 font-serif">My Wishlist</h2>
       
       {wishlist && wishlist.items?.length > 0 ? (
@@ -122,8 +123,8 @@ const Wishlist = () => {
         </div>
       ) : (
         <div className="text-center py-16">
-          <p className="text-xl text-amber-800 font-serif">Your wishlist is empty</p>
-          <p className="text-amber-600 mt-2 font-serif">Add items to your wishlist to save them for later</p>
+          <p className="text-xl text-amber-950 font-serif">Your wishlist is empty</p>
+          <p className="text-amber-950 mt-2 font-serif">Add items to your wishlist to save them for later</p>
         </div>
       )}
     </div>

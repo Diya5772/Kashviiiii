@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heart } from "lucide-react";
 
 const SimilarProducts = ({ currentProduct }) => {
     const [similarProducts, setSimilarProducts] = useState([]);
@@ -8,7 +9,6 @@ const SimilarProducts = ({ currentProduct }) => {
 
     useEffect(() => {
         const fetchSimilarProducts = async () => {
-            // Early return if no current product
             if (!currentProduct || !currentProduct._id) {
                 console.log("No valid current product", currentProduct);
                 setLoading(false);
@@ -16,12 +16,6 @@ const SimilarProducts = ({ currentProduct }) => {
             }
 
             try {
-                console.log("Sending request with product:", {
-                    id: currentProduct._id,
-                    category: currentProduct.category,
-                    filters: currentProduct.filters
-                });
-
                 const response = await fetch('http://localhost:5000/api/product/similar', {
                     method: 'POST',
                     headers: {
@@ -39,7 +33,6 @@ const SimilarProducts = ({ currentProduct }) => {
                 }
 
                 const data = await response.json();
-                console.log("Received similar products:", data);
                 setSimilarProducts(data);
             } catch (error) {
                 console.error("Error fetching similar products:", error);
@@ -51,52 +44,91 @@ const SimilarProducts = ({ currentProduct }) => {
         fetchSimilarProducts();
     }, [currentProduct]);
 
-    // Debug logging
-    console.log("Current product in component:", currentProduct);
-    console.log("Similar products state:", similarProducts);
+    if (!currentProduct) return null;
 
-    if (!currentProduct) {
-        return null;
+    if (loading) {
+        return (
+            <div className="text-center py-16">
+                <p className="text-2xl font-serif text-gray-700">
+                    Discovering similar treasures...
+                </p>
+            </div>
+        );
+    }
+
+    if (!similarProducts || similarProducts.length === 0) {
+        return (
+            <div className="text-center py-16">
+                <p className="text-2xl font-serif text-gray-700">
+                    More treasures coming soon...
+                </p>
+            </div>
+        );
     }
 
     return (
-        <div className="mt-16 mb-8 bg-[#1C1A1A]">
-            <div className="max-w-7xl mx-auto px-4 py-12">
-                <h2 className="text-3xl font-serif text-amber-500 mb-8">Similar Products</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {similarProducts.map((product) => (
+        <div className="max-w-full mx-auto px-8 py-16 bg-white">
+            <div className="text-center mb-16">
+                <h2 className="text-4xl font-serif text-gray-900 mb-4">
+                    EXPLORE SIMILAR DESIGNS
+                </h2>
+                <p className="text-lg text-gray-600 font-serif max-w-3xl mx-auto">
+                    Discover more exquisite pieces from our collection that complement your style.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                {similarProducts.map((product) => (
+                    <div 
+                        key={product._id}
+                        className="group"
+                    >
                         <div 
-                            key={product._id}
-                            className="group cursor-pointer"
+                            className="relative cursor-pointer" 
                             onClick={() => {
                                 window.scrollTo(0, 0);
                                 navigate(`/product/${product._id}`);
                             }}
                         >
-                            <div className="relative overflow-hidden rounded-lg">
+                            {/* Product Image with Hover Effect */}
+                            <div className="relative overflow-hidden">
                                 <img
-                                    src={product.image}
+                                    src={product.image?.startsWith('/uploads') 
+                                        ? `http://localhost:5000${product.image}`
+                                        : product.image}
                                     alt={product.name}
-                                    className="w-full h-[400px] object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                    className="w-full aspect-[3/4] object-cover transform 
+                                        group-hover:scale-105 transition-transform duration-500"
                                     onError={(e) => {
-                                        e.target.src = 'https://via.placeholder.com/400x400?text=Product+Image';
+                                        e.target.src = 'https://via.placeholder.com/300x400?text=Product+Image';
                                     }}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                <div className="absolute bottom-0 left-0 right-0 p-4">
-                                    <div className="bg-black/75 p-4 rounded-lg">
-                                        <h3 className="text-white font-serif text-lg">
-                                            {product.name}
-                                        </h3>
-                                        <p className="text-amber-400 font-medium mt-1">
-                                            Design No: {product.price?.toLocaleString()}
-                                        </p>
-                                    </div>
+                                {/* Inner border with gap */}
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 
+                                    transition-opacity duration-300">
+                                    <div className="absolute inset-5 border border-white"></div>
+                                </div>
+                                {/* Likes counter */}
+                                <div className="absolute bottom-3 right-3 flex items-center gap-1 
+                                    bg-black/40 text-white px-2 py-1 rounded-full text-sm">
+                                    <Heart size={14} />
+                                    <span>{product.wishlistCount || 0}</span>
                                 </div>
                             </div>
+
+                            {/* Product Info */}
+                            <div className="mt-4 text-center">
+                                <h3 className="font-serif text-lg text-gray-900 mb-2 
+                                    group-hover:text-amber-800 transition-colors duration-300">
+                                    {product.name}
+                                </h3>
+                                <p className="font-serif text-xl text-gray-800">
+                                    Design No: {product.price?.toLocaleString()}
+                                </p>
+                            </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
