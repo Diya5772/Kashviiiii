@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Send, Phone, Mail } from "lucide-react";
 import { motion } from "framer-motion";
-
+import Footer from "../components/Footer";
+import Navbar from "../components/navbar";
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
@@ -32,6 +33,7 @@ const Contact = () => {
   };
 
   return (
+    <div>
     <section 
       className="min-h-screen py-12 text-[#3F4F44] flex items-center justify-center"
       style={{
@@ -42,8 +44,9 @@ const Contact = () => {
       }}
     >
       <div className="container mx-auto px-4">
+        <Navbar/>
         <motion.div 
-          className="flex flex-col items-center gap-16 lg:flex-row lg:items-start lg:justify-between"
+          className="flex flex-col items-center gap-16 lg:flex-row lg:items-start lg:justify-between mt-24"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
@@ -114,6 +117,8 @@ const Contact = () => {
         </motion.div>
       </div>
     </section>
+    <Footer/>
+    </div>
   );
 };
 
@@ -152,7 +157,10 @@ const TextareaField = ({ label, placeholder, value, onChange }) => (
   <div>
     <label className="mb-2 block text-sm font-medium">{label}</label>
     <textarea rows="4" placeholder={placeholder} value={value} onChange={onChange} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:border-[#3F4F44] focus:ring-[#3F4F44]" />
+    
   </div>
+
+  
 );
 
 export default Contact;

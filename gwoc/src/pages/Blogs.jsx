@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import Navbar from "../components/navbar";
+import Footer from "../components/Footer";
 const FashionBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -32,13 +33,15 @@ const FashionBlog = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 ml-16">
+    <div className="max-w-full mx-auto p-6">
+      <Navbar/>
       <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
         rel="stylesheet"
       /> {/* Import Playfair Display font */}
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 mt-24">
+        <h1 className='text-4xl lg:text-5xl font-serif text-gray-900 leading-tight '>Blog</h1>
         {blogs.map((blog, index) => (
           <div key={blog._id}>
             <div className="flex flex-col md:flex-row gap-8 items-start mb-8">
@@ -102,6 +105,7 @@ const FashionBlog = () => {
           </div>
         </div>
       )}
+      <Footer/>
     </div>
   );
 };

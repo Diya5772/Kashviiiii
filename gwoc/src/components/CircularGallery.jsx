@@ -282,8 +282,8 @@ class Media {
     }
   
     // Double the height of the plane
-    const baseHeight = 350; // Base height for scaling
-    const baseWidth = 250; // Base width for scaling
+    const baseHeight = 550; // Base height for scaling
+    const baseWidth = 350; // Base width for scaling
     this.scale = (this.screen.height / 1500) * 2; // Multiply by 2 to double the height
   
     // Apply the doubled scale to height and width
@@ -305,7 +305,7 @@ class App {
   constructor(container, { items, bend, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans" } = {}) {
     document.documentElement.classList.remove('no-js');
     this.container = container;
-    this.scroll = { ease: 0.005, current: 0, target: 0, last: 0 };
+    this.scroll = { ease: 0.0005, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck, 200);
     this.createRenderer();
     this.createCamera();
@@ -466,7 +466,7 @@ class App {
 
 export default function CircularGallery({
   items,
-  bend = 2,
+  bend = 5,
   textColor = "#ffffff",
   borderRadius = 0.05,
   font = "bold 30px DM Sans"

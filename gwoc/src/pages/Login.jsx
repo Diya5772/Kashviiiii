@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import img from '../assets/option_4.jpg'; // Import the image
 
-function App() {
+function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [form, setForm] = useState({ email: '', password: '' });
@@ -193,4 +193,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

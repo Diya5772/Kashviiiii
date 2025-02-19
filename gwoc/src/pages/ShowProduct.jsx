@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import SimilarProducts from "../components/SimmilarProduct";
 import Navbar from "../components/navbar";
+import Footer from '../components/Footer';
+
 const ShowProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -544,6 +546,9 @@ const ShowProduct = () => {
 
 
       </div>
+      <div>
+  <Footer/>
+</div>
     </div>
   );
 };

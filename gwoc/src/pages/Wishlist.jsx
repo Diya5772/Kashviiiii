@@ -75,7 +75,7 @@ const Wishlist = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Navbar/>
-      <h2 className="text-3xl font-bold text-amber-800 mb-8 font-serif">My Wishlist</h2>
+      <h2 className="text-3xl font-bold text-amber-800 mb-8 mt-24 font-serif">My Wishlist</h2>
       
       {wishlist && wishlist.items?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -78,7 +78,7 @@ const TrendingProducts = ({ onNavigate = (productId) => console.log(`Navigate to
     return (
         <div className="max-w-[1800px] mx-auto px-8 py-16">
             <div className="text-center mb-16">
-                <h2 className="text-4xl font-serif text-gray-900 mb-4">SINGHANIA'S CHRONICLES</h2>
+                <h2 className="text-4xl font-serif text-gray-900 mb-4">KASHVI'S CHRONICLES</h2>
                 <p className="text-lg text-gray-600 font-serif max-w-3xl mx-auto">
                     Discover our curated collection of handwoven treasures, where each piece tells a story of tradition and craftsmanship.
                 </p>

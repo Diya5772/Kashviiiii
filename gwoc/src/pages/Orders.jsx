@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import Footer from "../components/Footer";
 const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -111,7 +111,9 @@ const Orders = () => {
                     <p className="text-amber-600 mt-2 font-serif">Your ordered items will appear here</p>
                 </div>
             )}
+            <div><Footer/></div>
         </div>
+        
     );
 };
 

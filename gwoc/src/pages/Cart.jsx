@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "../components/navbar";
+import Footer from "../components/Footer";
 const Cart = () => {
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -118,7 +119,8 @@ const Cart = () => {
     
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h2 className="text-3xl font-bold text-amber-800 mb-8 font-serif">My Cart</h2>
+            <Navbar/>
+            <h2 className="text-3xl font-bold text-amber-800 mb-8 mt-24 font-serif">My Cart</h2>
             
             {cart && cart.items?.length > 0 ? (
                 <div className="flex flex-col md:flex-row gap-8">

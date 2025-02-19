@@ -42,21 +42,21 @@ const Navbar = () => {
           <Link to="/">
             <img src={logo} alt="Logo" className="w-16 cursor-pointer" onClick={() => navigate("/")} />
           </Link>
-          <NavLink to="/" className="text-white hover:text-[#A27B5C] transition duration-300">Home</NavLink>
-          <NavLink to="/Contact" className="text-white hover:text-[#A27B5C] transition duration-300">Contact</NavLink>
-          <NavLink to="/Collection" className="text-white hover:text-[#A27B5C] transition duration-300">Collection</NavLink>
+          <NavLink to="/" className="text-[#A27B5C] transition duration-300">Home</NavLink>
+          <NavLink to="/Contact" className="text-[#A27B5C] transition duration-300">Contact</NavLink>
+          <NavLink to="/Collection" className="text-[#A27B5C] transition duration-300">Collection</NavLink>
         </div>
         
         {/* Center - Brand Name */}
         <Link to="/" className="flex flex-col items-center justify-center leading-none absolute left-1/2 transform -translate-x-1/2">
-          <span className="text-3xl font-light tracking-[0.3em] text-white lg:text-2xl md:text-xl sm:text-lg">KASHVI</span>
-          <span className="text-sm font-light tracking-[0.2em] text-gray-300 lg:text-xs md:text-xs sm:text-xs">CREATION</span>
+          <span className="text-3xl font-light tracking-[0.3em] text-[#A27B5C] lg:text-2xl md:text-xl sm:text-lg">KASHVI</span>
+          <span className="text-sm font-light tracking-[0.2em] text-[#A27B5C] lg:text-xs md:text-xs sm:text-xs">CREATION</span>
         </Link>
         
         {/* Right Navigation and Controls */}
         <div className="hidden md:flex items-center gap-8">
-          <NavLink to="/Blogs" className="text-white hover:text-[#A27B5C] transition duration-300">Blogs</NavLink>
-          <NavLink to="/AboutUs" className="text-white hover:text-[#A27B5C] transition duration-300">About Us</NavLink>
+          <NavLink to="/Blogs" className="text-[#A27B5C] transition duration-300">Blogs</NavLink>
+          <NavLink to="/AboutUs" className="text-[#A27B5C] transition duration-300">About Us</NavLink>
           
           <div className="flex items-center gap-4">
             <img src={assets.search_icon} className="w-6 cursor-pointer" alt="Search" />

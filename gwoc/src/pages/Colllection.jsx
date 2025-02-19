@@ -8,6 +8,7 @@ import { assets } from "../assets/assets/frontend_assets/assets";
 import heartIcon from "../assets/assets/heart_icon.svg";
 import heartIconSolid from "../assets/assets/heart-solid.svg";
 import Navbar from "../components/navbar";
+import Footer from '../components/Footer';
 
 const filtersList = [
   { label: 'Category', options: ['Silk Sarees', 'Cotton Sarees', 'Designer Sarees', 'Traditional Sarees'] },
@@ -348,7 +349,7 @@ const Collection = () => {
                         // Add to cart functionality
                       }}
                     >
-                      <img src={assets.cart_icon} alt="Cart" className="w-6 h-6" />
+                      <img src={assets.cart_icon} alt="Cart" className="w-6 h-6"  onClick={() => handleProductClick(product._id)} />
                     </button>
                     <button 
                       className="bg-white/90 p-3 rounded-full hover:bg-white shadow-lg transform hover:scale-110 transition-transform"
@@ -361,18 +362,22 @@ const Collection = () => {
                         src={wishlist[product._id] ? heartIconSolid : heartIcon}
                         alt="Wishlist"
                         className="w-6 h-6"
+                        onClick={() => handleProductClick(product._id)}
                       />
                     </button>
                   </div>
                 </div>
                 <div className="p-4">
                   <h3 className="text-gray-800 font-medium text-center">{product.name}</h3>
-                  <p className="text-[#3B82F6] text-center mt-2">₹{product.price}</p>
+                  <p className="text-[#3B82F6] text-center mt-2">{product.price}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
+      </div>
+      <div>
+        <Footer/>
       </div>
     </div>
   );

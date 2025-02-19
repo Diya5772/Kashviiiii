@@ -1,7 +1,8 @@
 import React from "react";
 import { MapPin, Mail, Phone, Clock, Store } from "lucide-react";
 import { motion } from "framer-motion";
-
+import Navbar from "../components/navbar";
+import Footer from "../components/Footer";
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
@@ -28,6 +29,7 @@ const AboutUs = () => {
         backgroundPosition: "center",
       }}
     >
+      <Navbar/>
       <div className="container mx-auto px-6 py-16">
         {/* Header Section */}
         <motion.div
@@ -36,7 +38,7 @@ const AboutUs = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="mb-4 text-5xl font-bold text-[#2C3930] hover:scale-105 transition-transform duration-300">
+          <h1 className=" mt-24 mb-4 text-5xl font-bold text-[#2C3930] hover:scale-105 transition-transform font-serif  leading-tight duration-300">
             Kashvi Creation
           </h1>
           <p className="text-xl text-[#2C3930]">
@@ -145,6 +147,7 @@ const AboutUs = () => {
           </motion.div>
         </motion.div>
       </div>
+      <Footer/>
     </div>
   );
 };
